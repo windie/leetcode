@@ -9,8 +9,8 @@ TEST(Palindrome_number, isPalindrome) {
   ASSERT_TRUE(s.isPalindrome(1331));
   ASSERT_FALSE(s.isPalindrome(1234));
 
-  ASSERT_TRUE(s.isPalindrome(-121));
+  ASSERT_FALSE(s.isPalindrome(-121));
   ASSERT_FALSE(s.isPalindrome(-124));
-  ASSERT_TRUE(s.isPalindrome(-1331));
+  ASSERT_FALSE(s.isPalindrome(-1331));
   ASSERT_FALSE(s.isPalindrome(-1234));
 }
