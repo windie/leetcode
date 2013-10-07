@@ -1,0 +1,29 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Extracted Google Test
+contrib/gtest-1.6.0/*
+
+# eclipse
+.cproject
+.project
+.settings
+
+# Executable files in test
+test/*
+!test/*.*
+!test/Makefile
+test/*.dSYM
+test/*.d
+test/*.unittest
