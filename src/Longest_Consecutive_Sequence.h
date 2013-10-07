@@ -1,11 +1,7 @@
-#include<vector>
-#include<hash_set.h>
-using namespace std;
-
 class Solution {
 public:
     int longestConsecutive(vector<int> &num) {
-    	hash_set<int> hashset;
+    	unordered_set<int> hashset;
     	for(int i=0; i<num.size(); i++){
     		hashset.insert(num[i]);
     	}
