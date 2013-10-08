@@ -24,13 +24,14 @@ public:
             if(nums[begin].val + nums[end].val == target){
                 res.push_back(min(nums[begin].index, nums[end].index));
                 res.push_back(max(nums[begin].index, nums[end].index));
-                return res;
+                break;
             }else if(nums[begin].val + nums[end].val < target){
                 begin++;
             }else{
                 end--;
             }
         }
+        return res;
     }
 };
 

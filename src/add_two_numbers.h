@@ -52,6 +52,7 @@ public:
             cur->next = addOne(p1);
             return res;
         }
+        return res;
     }
 };
 

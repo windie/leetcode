@@ -1,5 +1,47 @@
-//#include <unordered_map>
-//
+class Solution {
+public:
+	vector<int> findSubstring(string S, vector<string> &L) {
+		unordered_map<string, int> map;
+		for (int i = 0; i < L.size(); i++) {
+			if (map.find(L[i]) != map.end()) {
+				map[L[i]]++;
+			} else {
+				map[L[i]] = 1;
+			}
+		}
+		vector<int> res;
+		if (S.size() == 0 || L.size() == 0) {
+			return res;
+		}
+		for (int i = 0; i + L[0].size() * L.size() <= S.size(); i++) {
+			unordered_map<string, int> tmp;
+			//bool skip = false;
+			for (int j = i, num = 1; num <= L.size(); num++, j += L[0].size()) {
+				string substr = S.substr(j, L[0].size());
+				auto mapit = map.find(substr);
+				if(mapit==map.end()){
+				    //skip = true;
+					break;
+				}
+				auto it = tmp.find(substr);
+				if (it != tmp.end()) {
+					(*it).second++;
+					if(mapit->second < it->second){
+					    //skip = true;
+					    break;
+					}
+				} else {
+					tmp[substr] = 1;
+				}
+			}
+			if (tmp == map) {
+				res.push_back(i);
+			}
+		}
+		return res;
+	}
+};
+
 //class Solution {
 //public:
 //	vector<int> findSubstring(string S, vector<string> &L) {
