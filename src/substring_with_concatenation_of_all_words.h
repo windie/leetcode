@@ -1,4 +1,22 @@
 class Solution {
+private:
+	bool isEquals(unordered_map<string, int> &map1, unordered_map<string, int> &map2) {
+		if(map1.size() == map2.size()) {
+			auto iter1 = map1.begin();
+			while(iter1!= map1.end()) {
+				auto iter2 = map2.find(iter1->first);
+				if(iter2 == map2.end() || iter1->second != iter2->second) {
+					return false;
+				}
+				++iter1;
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 public:
 	vector<int> findSubstring(string S, vector<string> &L) {
 		unordered_map<string, int> map;
@@ -34,7 +52,7 @@ public:
 					tmp[substr] = 1;
 				}
 			}
-			if (tmp == map) {
+			if (isEquals(tmp, map)) {
 				res.push_back(i);
 			}
 		}
