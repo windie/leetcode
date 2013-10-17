@@ -1,123 +1,79 @@
-//class Solution {
-//public:
-//	vector<vector<string> > findLadders(string start, string end,
-//			unordered_set<string> &dict) {
-//		pathes.clear();
-//		dict.insert(start);
-//		dict.insert(end);
-//		vector < string > prev;
-//		unordered_map<string, vector<string> > traces;
-//		for (unordered_set<string>::const_iterator citr = dict.begin();
-//				citr != dict.end(); citr++) {
-//			traces[*citr] = prev;
-//		}
-//
-//		vector < unordered_set<string> > layers(2);
-//		int cur = 0;
-//		int pre = 1;
-//		layers[cur].insert(start);
-//		while (true) {
-//			cur = !cur;
-//			pre = !pre;
-//			for (unordered_set<string>::const_iterator citr =
-//					layers[pre].begin(); citr != layers[pre].end(); citr++)
-//				dict.erase(*citr);
-//			layers[cur].clear();
-//			for (unordered_set<string>::const_iterator citr =
-//					layers[pre].begin(); citr != layers[pre].end(); citr++) {
-//				for (int n = 0; n < (*citr).size(); n++) {
-//					string word = *citr;
-//					int stop = word[n] - 'a';
-//					for (int i = (stop + 1) % 26; i != stop; i = (i + 1) % 26) {
-//						word[n] = 'a' + i;
-//						if (dict.find(word) != dict.end()) {
-//							traces[word].push_back(*citr);
-//							layers[cur].insert(word);
-//						}
-//					}
-//				}
-//			}
-//			if (layers[cur].size() == 0)
-//				return pathes;
-//			if (layers[cur].count(end))
-//				break;
-//		}
-//		vector < string > path;
-//		buildPath(traces, path, end);
-//
-//		return pathes;
-//	}
-//
-//private:
-//	void buildPath(unordered_map<string, vector<string> > &traces,
-//			vector<string> &path, const string &word) {
-//		if (traces[word].size() == 0) {
-//			path.push_back(word);
-//			vector < string > curPath = path;
-//			reverse(curPath.begin(), curPath.end());
-//			pathes.push_back(curPath);
-//			path.pop_back();
-//			return;
-//		}
-//
-//		const vector<string> &prevs = traces[word];
-//		path.push_back(word);
-//		for (vector<string>::const_iterator citr = prevs.begin();
-//				citr != prevs.end(); citr++) {
-//			buildPath(traces, path, *citr);
-//		}
-//		path.pop_back();
-//	}
-//
-//	vector<vector<string> > pathes;
-//};
-
 class Solution {
-
 public:
+	void AdjGraph(vector<vector<int> > &adjGraph, vector<string> &nodes,
+			unordered_map<string, int> &wordIdx,
+			const unordered_set<string> &dict) {
+		int j = 0;
+		for (auto it = dict.begin(); it != dict.end(); it++, j++) {
+			nodes.push_back(*it);
+			wordIdx[*it] = j;
+		}
+		for (int i = 0; i < nodes.size(); i++) {
+			vector<int> tmp;
+			adjGraph.push_back(tmp);
+		}
+		for (int i = 0; i < nodes.size(); i++) {
+			string word = nodes[i];
+			for (int j = 0; j < word.size(); j++) {
+				for (char ch = 'a'; ch <= 'z'; ch++) {
+					if (ch == word[j]) {
+						continue;
+					}
+					char chtmp = word[j];
+					word[j] = ch;
+					auto it = wordIdx.find(word);
+					if (it != wordIdx.end()) {
+						adjGraph[i].push_back(it->second);
+					}
+					word[j] = chtmp;
+				}
+			}
+		}
+	}
+
 	vector<vector<string> > findLadders(string start, string end,
 			unordered_set<string> &dict) {
+		vector < vector<int> > adjGraph;
+		vector < string > nodes; // index -> string
+		unordered_map<string, int> wordIdx; // string -> index
+		dict.insert(start);
+		dict.insert(end);
+		AdjGraph(adjGraph, nodes, wordIdx, dict);
+
+		int startIdx = wordIdx[start], endIdx = wordIdx[end];
 		vector < vector<string> > res;
-		vector < string > graph;
-		vector<int> path;
-		graph.push_back(start);
-		dict.erase(start);
+		vector<int> graph, path;
+		unordered_set<int> used;
+		graph.push_back(startIdx);
 		path.push_back(-1);
+		used.insert(startIdx);
 		int begin = 0, size = 1;
 		bool isfind = false;
-		int numLevel = 1;
 		while (begin < size && !isfind) {
-			numLevel++;
 			for (int i = begin; i < size; i++) {
-				for (int j = 0; j < graph[i].size(); j++) {
-					for (int ch = 'a'; ch <= 'z'; ch++) {
-						if (ch == graph[i][j]) {
-							continue;
+				int curWord = graph[i];
+				for (int j = 0; j < adjGraph[curWord].size(); j++) {
+					int adjWord = adjGraph[curWord][j];
+					if (adjWord == endIdx) {
+						isfind = true;
+						vector < string > respath;
+						respath.push_back(end);
+						respath.push_back(nodes[curWord]);
+						int k = path[i];
+						while (k >= 0) {
+							respath.push_back(nodes[graph[k]]);
+							k = path[k];
 						}
-						string newword = graph[i];
-						newword[j] = ch;
-						if (newword == end) {
-							vector < string > shortestPath(numLevel);
-							int k = i, index = numLevel - 1;
-							shortestPath[index--] = newword;
-							while (k >= 0) {
-								shortestPath[index--] = graph[k];
-								k = path[k];
-							}
-							isfind = true;
-							res.push_back(shortestPath);
-						}
-						if (dict.find(newword) != dict.end()) {
-							graph.push_back(newword);
-							path.push_back(i);
-						}
+						reverse(respath.begin(), respath.end());
+						res.push_back(respath);
+					} else if (used.find(adjWord) == used.end()) {
+						graph.push_back(adjWord);
+						path.push_back(i);
 					}
 				}
 			}
+			used.insert(graph.begin() + size, graph.end());
 			begin = size;
-			for (int ii = size; ii < graph.size(); ii++) {
-				dict.erase(graph[ii]);
-			}
 			size = graph.size();
 		}
 		return res;
