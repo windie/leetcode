@@ -13,11 +13,11 @@ public:
 			res.push_back(0);
 			return res;
 		}
-		vector<int> pre = grayCode(n - 1);
+		res= grayCode(n - 1);
+		int size = res.size();
 		int powVal = pow(n - 1);
-		res = pre;
-		for (int i = pre.size() - 1; i >= 0; i--) {
-			res.push_back(pre[i] + powVal);
+		for (int i = size - 1; i >= 0; i--) {
+			res.push_back(res[i] + powVal);
 		}
 		return res;
 	}

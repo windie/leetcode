@@ -1,59 +1,23 @@
-class Solution {
-    ListNode *addOne(ListNode *l){
-        if(l==NULL){
-            ListNode*res = new ListNode(1);
-            return res;
-        }
-        int addone = 1;
-        ListNode* p=l, *pre = NULL;
-        while(p!=NULL && addone){
-            int val = (p->val + addone)%10;
-            addone = (p->val + 1)/10;
-            p->val = val;
-            pre = p;
-            p = p->next;
-        }
-        if(addone){
-            pre->next = new ListNode(1);
-        }
-        return l;
-    }
+class Solution{
+	ListNode * addTwoNumbers(ListNode *n1, ListNode *n2, int carry){
+		if(n1 == NULL && n2 == NULL && carry==0){
+			return NULL;
+		}
+		int val = carry;
+		if(n1!=NULL){
+			val+=n1->val;
+		}
+		if(n2!=NULL){
+			val+=n2->val;
+		}
+		ListNode * cur = new ListNode(val%10);
+		cur->next = addTwoNumbers(n1==NULL? NULL : n1->next, n2==NULL? NULL: n2->next, val/10);
+		return cur;
+	}
 public:
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-        int addone = 0;
-        ListNode* p1=l1, *p2=l2, *res=NULL, *cur = NULL;
-        while(p1!=NULL && p2!=NULL){
-            int val = (p1->val + p2->val + addone)%10;
-            addone = (p1->val + p2->val + addone)/10;
-            ListNode *p = new ListNode(val);
-            if(res == NULL){
-                res = p;
-                cur = p;
-            }else{
-                cur->next = p;
-                cur = cur->next;
-            }
-            p1 = p1->next;
-            p2 = p2->next;
-        }
-        if(p1==NULL && addone==0){
-            cur->next = p2;
-            return res;
-        }
-        if(p2==NULL && addone==0){
-            cur->next = p1;
-            return res;
-        }
-        if(p1==NULL && addone==1){
-            cur->next = addOne(p2);
-            return res;
-        }
-        if(p2==NULL && addone == 1){
-            cur->next = addOne(p1);
-            return res;
-        }
-        return res;
-    }
+	ListNode * addTwoNumbers(ListNode* n1, ListNode *n2){
+		return addTwoNumbers(n1, n2, 0);
+	}
 };
 
 

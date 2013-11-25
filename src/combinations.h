@@ -1,26 +1,46 @@
 #include <iostream>
 using namespace std;
-
 class Solution {
-	void recursive( int m, int k, vector<int> &cur, vector<vector<int> > &res){
-		if(k==0){
+	void recursive( int begin, int n, int k, vector<int> &cur, vector<vector<int> > &res){
+		if(cur.size() == k){
 			res.push_back(cur);
-			return;
 		}
-		for(int i = m; i>=k; i--){
-			cur[k-1] = i;
-			recursive(i-1, k-1, cur, res);
+		for(int i = begin; i<= n; i++){
+			cur.push_back(i);
+			recursive(i+1, n, k, cur, res);
+			cur.pop_back();
 		}
 	}
 
 public:
     vector<vector<int> > combine(int n, int k) {
-    	vector<int> cur(k, 0);
+    	vector<int> cur;
     	vector<vector<int> > res;
-    	recursive(n, k, cur, res);
+    	recursive(1, n, k, cur, res);
     	return res;
     }
 };
+
+//class Solution {
+//	void recursive( int m, int k, vector<int> &cur, vector<vector<int> > &res){
+//		if(k==0){
+//			res.push_back(cur);
+//			return;
+//		}
+//		for(int i = m; i>=k; i--){
+//			cur[k-1] = i;
+//			recursive(i-1, k-1, cur, res);
+//		}
+//	}
+//
+//public:
+//    vector<vector<int> > combine(int n, int k) {
+//    	vector<int> cur(k, 0);
+//    	vector<vector<int> > res;
+//    	recursive(n, k, cur, res);
+//    	return res;
+//    }
+//};
 
 
 //class Solution {

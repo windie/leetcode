@@ -1,27 +1,27 @@
 class Solution {
 public:
-    int search(int A[], int n, int target) {
-        int begin = 0, end =n-1;
-        while(begin<=end){
-            int mid = begin + (end-begin)/2;
-            if(A[mid] == target){
-                return mid;
-            }else if(A[mid] >= A[begin]){
-                if(target > A[mid] || target < A[begin]){
-                    begin = mid+1;
-                }else {
-                    end = mid-1;
-                }
-            }else{
-                if(target < A[mid] || target > A[end]){
-                    end = mid -1;
-                }else{
-                    begin = mid+1;
-                }
-            }
-        }
-        return -1;
-    }
+	int search(int A[], int n, int target) {
+		int begin = 0, end = n - 1;
+		while (begin <= end) {
+			int mid = begin + (end - begin) / 2;
+			if (A[mid] == target) {
+				return mid;
+			} else if (A[mid] >= A[begin]) {
+				if (target > A[mid] || target < A[begin]) {
+					begin = mid + 1;
+				} else {
+					end = mid - 1;
+				}
+			} else {
+				if (target < A[mid] || target > A[end]) {
+					end = mid - 1;
+				} else {
+					begin = mid + 1;
+				}
+			}
+		}
+		return -1;
+	}
 };
 
 //class Solution {
