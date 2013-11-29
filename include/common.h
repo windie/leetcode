@@ -25,5 +25,6 @@ using namespace std::tr1;
 #include "tree_link_node.h"
 #include "undirected_graph_node.h"
 #include "random_list_node.h"
+#include "point.h"
 
 #endif // COMMON_H

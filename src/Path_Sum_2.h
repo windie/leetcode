@@ -11,20 +11,18 @@ using namespace std;
  * };
  */
 class Solution {
-    void f(TreeNode *root, int target, vector<int> &cur, vector<vector<int> > &res){
-        if(root == NULL){
-            return;
-        }
+    void recursive(vector<vector<int> > & res, vector<int> &cur, int sum, TreeNode *root){
         cur.push_back(root->val);
-        if(root->left && root->right){
-        f(root->left, target-root->val, cur, res);
-        f(root->right, target-root->val, cur, res);
-        }else if(root->left){
-            f(root->left, target-root->val, cur, res);
-        }else if(root->right){
-            f(root->right, target-root->val, cur, res);
-        }else if(target-root->val == 0){
-            res.push_back(cur);
+        if(root->left){
+            recursive(res, cur, sum - root->val, root->left);
+        }
+        if(root->right){
+            recursive(res, cur, sum - root->val, root->right);
+        }
+        if(root->left == NULL && root->right == NULL){
+            if(sum == root->val){
+                res.push_back(cur);
+            }
         }
         cur.pop_back();
     }
@@ -35,7 +33,7 @@ public:
         if(root == NULL){
             return res;
         }
-        f(root, sum, cur, res);
+        recursive(res, cur, sum, root);
         return res;
     }
 };
