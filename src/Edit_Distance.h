@@ -20,6 +20,28 @@ public:
     }
 };
 
+// why compile error?
+
+//class Solution {
+//public:
+//    int minDistance(string word1, string word2) {
+//        vector<vector<int> > f(word1.size()+1, vector<int>(word2.size()+1, 0));
+//        for(int i = 0; i<=word2.size(); i++){
+//            f[0][i] = i;
+//        }
+//        for(int i = 0; i<=word1.size(); i++){
+//            f[i][0] = i;
+//        }
+//        for(int i = 1; i<=word1.size(); i++){
+//            for(int j = 1; j<=word2.size(); j++){
+//                int tmp = min(f[i-1][j] + 1, f[i][j-1] +1);
+//                f[i][j] = min(tmp, f[i-1]f[j-1] + (word1[i]==word2[j]?0:1));
+//            }
+//        }
+//        return f[word1.size()][word2.size()];
+//    }
+//};
+
 //class Solution {
 //private:
 //	int mindis(int a, int b, int c){
