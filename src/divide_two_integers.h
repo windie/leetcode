@@ -31,3 +31,35 @@ public:
 		}
 	}
 };
+
+
+// class Solution {
+// public:
+//     int divide(int dividend, int divisor) {
+//         if(divisor == 0){
+//             return INT_MAX;
+//         }
+//         if(dividend == 0){
+//             return 0;
+//         }
+//         bool isneg = false;
+//         if(divisor < 0){
+//             isneg = !isneg;
+//             divisor = -divisor;
+//         }
+//         if(dividend < 0){
+//             isneg = !isneg;
+//             dividend = -dividend;
+//         }
+//         int res = 0;
+//         while(divisor <= dividend){
+//             int power_num = 0;
+//             while((divisor<<power_num) <= dividend){
+//                 power_num++;
+//             }
+//             res += (divisor<<(power_num-1));
+//             dividend -= (divisor<<(power_num-1));
+//         }
+//         return isneg ? -res : res;
+//     }
+// };
