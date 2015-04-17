@@ -1,35 +1,65 @@
 class Solution {
-    string f(int n){
+public:
+    string countAndSay(int n) {
+        vector<string> f(n);
         if(n==0){
             return "";
         }
-        if(n==1){
-            return "1";
-        }
-        string s = f(n-1);
-        string res = "";
-        int cnt = 1;
-        char ch = s[0];
-        for(int i=1; i<s.size(); i++){
-            if(s[i] == ch){
-                cnt++;
-            }else{
-                res += (cnt+'0');
-                res += ch;
-                ch = s[i];
-                cnt = 1;
+        f[0] = "1";
+        for(int i = 1; i<n; i++){
+            string res="";
+            int ch = f[i-1][0];
+            int cnt = 1;
+            for(int j = 1; j < f[i-1].size(); j++){
+                if(f[i-1][j] == ch){
+                    cnt++;
+                }else{
+                    res.push_back(cnt+'0');
+                    res.push_back(ch);
+                    ch = f[i-1][j];
+                    cnt = 1;
+                }
             }
+            res.push_back(cnt+'0');
+            res.push_back(ch);
+            f[i] = res;
         }
-        res += (cnt + '0');
-        res += ch;
-        return res;
-    }
-
-public:
-    string countAndSay(int n) {
-        return f(n);
+        return f[n-1];
     }
 };
+
+//class Solution {
+//    string f(int n){
+//        if(n==0){
+//            return "";
+//        }
+//        if(n==1){
+//            return "1";
+//        }
+//        string s = f(n-1);
+//        string res = "";
+//        int cnt = 1;
+//        char ch = s[0];
+//        for(int i=1; i<s.size(); i++){
+//            if(s[i] == ch){
+//                cnt++;
+//            }else{
+//                res += (cnt+'0');
+//                res += ch;
+//                ch = s[i];
+//                cnt = 1;
+//            }
+//        }
+//        res += (cnt + '0');
+//        res += ch;
+//        return res;
+//    }
+//
+//public:
+//    string countAndSay(int n) {
+//        return f(n);
+//    }
+//};
 
 //#include <iostream>
 //using namespace std;

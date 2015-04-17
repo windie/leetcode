@@ -1,18 +1,21 @@
 class Solution {
 public:
-    int jump(int A[], int n) {
-        if(n < 2){
+    int jump(vector<int>& nums) {
+        if(nums.size() < 2){
             return 0;
         }
-        int cur = 0, step= 0, last = 0;
-        for(int i = 0; i<n; i++){
-            if(i > last){
-                step++;
-                last = cur;
+        int cnt= 0, step_max = 0, one_more_step_max = 0;
+        // step_max: distance can jump using cnt steps
+        // one_more_step_max: distance can jump using cnt+1 steps
+        for(int i = 0; i<nums.size(); i++){
+            if(i > step_max){
+                cnt++;
+                step_max = one_more_step_max;
             }
-            cur = max(cur, i+A[i]);
+            one_more_step_max = max(one_more_step_max, i+nums[i]);
         }
-        return step;
+        return cnt;
+
     }
 };
 
