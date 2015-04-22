@@ -13,7 +13,7 @@ public:
 			m[0][i] = m[0][i - 1] && (s3[i - 1] == s2[i - 1]);
 		}
 		for (int i = 1; i <= s1.length(); i++) {
-			m[i][0] = m[i - 1][0] && (s3[i - i] == s1[i - i]);
+			m[i][0] = m[i - 1][0] && (s3[i - 1] == s1[i - 1]);
 		}
 		for (int i = 1; i <= s1.length(); i++) {
 			for (int j = 1; j <= s2.length(); j++) {
