@@ -1,28 +1,47 @@
 class Solution {
 public:
-	int minCut(string s) {
-		vector<vector<bool> > st(s.size(), vector<bool>(s.size(), false));
-		int D[s.length()+1];
-		bool P[s.length()][s.length()];
-		for (int i = 0; i <= s.length(); i++) {
-			D[i] = s.length() - i;
-		}
-		for (int i = 0; i < s.length(); i++) {
-			for (int j = 0; j < s.length(); j++) {
-				P[i][j] = false;
-			}
-		}
-		for (int i = s.length() - 1; i >= 0; i--) {
-			for (int j = i; j < s.length(); j++) {
-				if (s[i] == s[j] && ((j - i < 2) || P[i + 1][j - 1])) {
-					P[i][j] = true;
-					D[i] = min(D[i], 1 + D[j + 1]);
-				}
-			}
-		}
-		return D[0]-1;
-	}
+    int minCut(string s) {
+        vector<vector<bool> > valid(s.size(), vector<bool>(s.size(), false));
+        vector<int> dp(s.size()+1);
+        for(int i = 0; i<=s.size(); i++){
+            dp[i] = s.size()-i;
+        }
+        for(int i = s.size()-1; i>=0; i--){
+            for(int j = i; j<s.size(); j++){
+                if(s[i] == s[j] && (j-i<=2 || valid[i+1][j-1])){
+                    valid[i][j] = true;
+                    dp[i] = min(dp[i], dp[j+1]+1);
+                }
+            }
+        }
+        return dp[0]-1;
+    }
 };
+
+//class Solution {
+//public:
+//	int minCut(string s) {
+//		int D[s.length()+1];
+//		bool P[s.length()][s.length()];
+//		for (int i = 0; i <= s.length(); i++) {
+//			D[i] = s.length() - i;
+//		}
+//		for (int i = 0; i < s.length(); i++) {
+//			for (int j = 0; j < s.length(); j++) {
+//				P[i][j] = false;
+//			}
+//		}
+//		for (int i = s.length() - 1; i >= 0; i--) {
+//			for (int j = i; j < s.length(); j++) {
+//				if (s[i] == s[j] && ((j - i < 2) || P[i + 1][j - 1])) {
+//					P[i][j] = true;
+//					D[i] = min(D[i], 1 + D[j + 1]);
+//				}
+//			}
+//		}
+//		return D[0]-1;
+//	}
+//};
 
 //class Solution {
 //	private:

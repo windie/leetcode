@@ -1,3 +1,80 @@
+class Solution {
+    void filldic(vector<int> &dic, string s){
+        for(int i = 0; i<s.size(); i++){
+            dic[s[i]]++;
+        }
+    }
+    bool isvalid(vector<int> &tdic, vector<int> &sdic){
+        for(int i = 0; i<tdic.size(); i++){
+            if(sdic[i] < tdic[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+public:
+    string minWindow(string s, string t) {
+        vector<int> tdic(256, 0);
+        vector<int> sdic(256, 0);
+        filldic(tdic, t);
+        int begin = -1, end = -1;
+        for(int i = 0; i<s.size(); i++){
+            if(!tdic[s[i]]){
+                continue;
+            }
+            if(begin == -1){
+                begin = i;
+            }
+            sdic[s[i]]++;
+            if(isvalid(tdic, sdic)){
+                end = i;
+                break;
+            }
+        }
+        if(begin == -1 || end == -1){
+            return "";
+        }
+        int res = end - begin + 1;
+        int resbegin = begin;
+        int prebegin = begin;
+        while(begin<s.size()){
+            if(begin == prebegin){
+                sdic[s[prebegin]]--;
+            }
+            begin++;
+            if(tdic[s[begin]]==0){
+                continue;
+            }
+            if(sdic[s[prebegin]] >= tdic[s[prebegin]]){
+                if(end - begin + 1 < res){
+                    res = end - begin + 1;
+                    resbegin = begin;
+                }
+            }else{
+                end++;
+                for(; end<s.size(); end++){
+                    if(tdic[s[end]]==0){
+                        continue;
+                    }
+                    sdic[s[end]]++;
+                    if(sdic[s[prebegin]] >= tdic[s[prebegin]]){
+                        if(end - begin + 1 < res){
+                            res = end - begin + 1;
+                            resbegin = begin;
+                        }
+                        break;
+                    }
+                }
+                if(end == s.size()){
+                    break;
+                }
+            }
+            prebegin = begin;
+        }
+        return s.substr(resbegin, res);
+    }
+};
+
 //class Solution {
 //	void find(string & S, string &T, int start, string &res, int* dic) {
 //		int *pdic = new int[256];
