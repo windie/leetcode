@@ -1,49 +1,110 @@
 class Solution {
-	string connect(vector<string> &words, int begin, int end, int len, int L,
-			bool isLeft) {
-		string res;
-		if (isLeft || begin == end) {
-			for (int i = begin; i <= end; i++) {
-				if (i != begin) {
-					res += " ";
-				}
-				res += words[i];
-			}
-			res.append(L - res.size(), ' ');
-			return res;
-		}
-		int avgspc = (L - len) / (end - begin);
-		int extraspc = (L - len) % (end - begin);
-		res = words[begin];
-		for (int i = begin + 1; i <= end; i++) {
-			string space(avgspc, ' ');
-			if (extraspc > 0) {
-				space.push_back(' ');
-			}
-			res += space;
-			res += words[i];
-			extraspc--;
-		}
-		return res;
-	}
+    string construct(vector<string> & words, int curlen, int start, int end, int maxWidth){
+        string res;
+        if(start == end){
+            res = words[start];
+            string tmp(maxWidth - curlen, ' ');
+            res += tmp;
+            return res;
+        }
+        int base = (maxWidth - curlen) / (end - start);
+        int remain = (maxWidth - curlen) % (end - start);
+        for(int i = start; i <= end; i++){
+            if(i > start){
+                if(i - start <= remain){
+                    string tmp(base+1, ' ');
+                    res += tmp;
+                }else{
+                    string tmp(base, ' ');
+                    res += tmp;
+                }
+            }
+            res += words[i];
+        }
+        return res;
+    }
+    string formatlast(vector<string>& words, int start, int maxWidth){
+        string res;
+        for(int i = start; i<words.size(); i++){
+            if(i == start){
+                res = words[i];
+            }else{
+                res += " ";
+                res += words[i];
+            }
+        }
+        string tmp(maxWidth - res.size(), ' ');
+        res += tmp;
+        return res;
+    }
 public:
-	vector<string> fullJustify(vector<string> &words, int L) {
-		int begin = 0;
-		vector < string > res;
-		int len = 0;
-		for (int i = 0; i < words.size(); i++) {
-			if (len + words[i].size() + i - begin > L) {
-				res.push_back(connect(words, begin, i - 1, len, L, false));
-				begin = i;
-				len = words[i].size();
-			}else{
-				len += words[i].size();
-			}
-		}
-		res.push_back(connect(words, begin, words.size() - 1, len, L, true));
-		return res;
-	}
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string> res;
+        if(words.size()==0){
+            return res;
+        }
+        int curlen = words[0].size();
+        int start = 0;
+        for(int i = 1; i<words.size(); i++){
+            if(curlen + words[i].size() + i-start <= maxWidth){
+                curlen += words[i].size();
+            }else{
+                res.push_back(construct(words, curlen, start, i-1, maxWidth));
+                curlen = words[i].size();
+                start = i;
+            }
+        }
+        res.push_back(formatlast(words, start, maxWidth));
+        return res;
+    }
 };
+
+//class Solution {
+//	string connect(vector<string> &words, int begin, int end, int len, int L,
+//			bool isLeft) {
+//		string res;
+//		if (isLeft || begin == end) {
+//			for (int i = begin; i <= end; i++) {
+//				if (i != begin) {
+//					res += " ";
+//				}
+//				res += words[i];
+//			}
+//			res.append(L - res.size(), ' ');
+//			return res;
+//		}
+//		int avgspc = (L - len) / (end - begin);
+//		int extraspc = (L - len) % (end - begin);
+//		res = words[begin];
+//		for (int i = begin + 1; i <= end; i++) {
+//			string space(avgspc, ' ');
+//			if (extraspc > 0) {
+//				space.push_back(' ');
+//			}
+//			res += space;
+//			res += words[i];
+//			extraspc--;
+//		}
+//		return res;
+//	}
+//public:
+//	vector<string> fullJustify(vector<string> &words, int L) {
+//		int begin = 0;
+//		vector < string > res;
+//		int len = 0;
+//		for (int i = 0; i < words.size(); i++) {
+//			if (len + words[i].size() + i - begin > L) {
+//				res.push_back(connect(words, begin, i - 1, len, L, false));
+//				begin = i;
+//				len = words[i].size();
+//			}else{
+//				len += words[i].size();
+//			}
+//		}
+//		res.push_back(connect(words, begin, words.size() - 1, len, L, true));
+//		return res;
+//	}
+//};
 
 //class Solution {
 //private:
