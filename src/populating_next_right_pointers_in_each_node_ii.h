@@ -16,9 +16,10 @@ public:
 		TreeLinkNode *rs = NULL;
 		while (p) {
 			TreeLinkNode *p1 = p->next;
-			while (p1 && p1->left == NULL && p1->right == NULL) {
+			while (p1 && p1->left == NULL && p1->right == NULL) { // find the first next sibling who has children
 				p1 = p1->next;
 			}
+			// rs: p's children's next
 			if (p1 == NULL) {
 				rs = NULL;
 			} else if (p1->left) {

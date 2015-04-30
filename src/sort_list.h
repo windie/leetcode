@@ -7,70 +7,75 @@
  * };
  */
 class Solution {
-    void rec(ListNode *& begin, ListNode *& end){
-        if(begin == NULL){
-            end = NULL;
-            return;
+    ListNode* merge(ListNode* head1, ListNode* head2){
+        ListNode * res = NULL, *tail = NULL;
+        if(head1 == NULL){
+            return head2;
         }
-        if(begin == end){
-            end->next = NULL;
-            return;
+        if(head2 == NULL){
+            return head1;
         }
-        ListNode * p = begin->next, *pre = p;
-        ListNode *b1 = NULL, *e1 = NULL, *b2 = NULL, *e2 = NULL;
-        while(p && pre != end){
-            if(p->val > begin->val){
-                if(b2==NULL){
-                    b2 = p;
-                    e2 = p;
+        ListNode *p1 = head1, *p2 = head2;
+        while(p1 && p2){
+            if(p1->val < p2->val){
+                if(res == NULL){
+                    res = p1;
+                    tail = p1;
                 }else{
-                    e2->next = p;
-                    e2 = p;
+                    tail->next = p1;
+                    tail = tail->next;
                 }
+                p1 = p1->next;
             }else{
-                if(b1==NULL){
-                    b1 = p;
-                    e1 = p;
+                if(res == NULL){
+                    res = p2;
+                    tail = p2;
                 }else{
-                    e1->next = p;
-                    e1 = p;
+                    tail->next = p2;
+                    tail = tail->next;
                 }
+                p2 = p2->next;
             }
-            pre = p;
-            p = p->next;
         }
-        if(e1){
-            e1->next = NULL;
-        }
-        if(e2){
-            e2->next = NULL;
-        }
-        rec(b1, e1);
-        rec(b2, e2);
-        if(e1){
-            e1->next = begin;
-            begin = b1;
-        }
-        begin->next = b2;
-        if(e2){
-            end = e2;
-        }else{
-            end = begin;
-        }
-        end->next = NULL;
-    }
-public:
-    ListNode *sortList(ListNode *head) {
-        if(head == NULL){
+        if(tail == NULL){
             return NULL;
         }
-        ListNode * p = head, *tail = head, *begin = head;
+        if(p1){
+            tail->next = p1;
+        }else if(p2){
+            tail->next = p2;
+        }else{
+            tail->next = NULL;
+        }
+        return res;
+    }
+    ListNode* sort(ListNode* head, int len, ListNode *&tail){
+        if(len <=0){
+            return NULL;
+        }
+        if(len == 1){
+            tail = head->next;
+            head->next = NULL;
+            return head;
+        }
+        ListNode *left = sort(head, len/2, tail);
+        ListNode *right = sort(tail, len - len/2, tail);
+        return merge(left, right);
+    }
+    int len(ListNode *head){
+        ListNode *p = head;
+        int res = 0;
         while(p){
-            tail = p;
+            res++;
             p = p->next;
         }
-        rec(begin, tail);
-        return begin;
+        return res;
+    }
+public:
+    ListNode* sortList(ListNode* head) {
+        int lenth = len(head);
+        ListNode *tail = NULL;
+        return sort(head, lenth, tail);
     }
 };
 
