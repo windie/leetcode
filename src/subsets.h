@@ -16,3 +16,28 @@ public:
     	return res;
     }
 };
+
+class Solution {
+public:
+    /**
+     * @param S: A set of numbers.
+     * @return: A list of lists. All valid subsets.
+     */
+    void rec(vector<int> &num, int idx, vector<int> cur, vector<vector<int> > &res) {
+        res.push_back(cur);
+        for(int i = idx; i < num.size(); i++) {
+            cur.push_back(num[i]);
+            rec(num, i + 1, cur, res);
+            cur.pop_back();
+        }
+    }
+
+    vector<vector<int> > subsets(vector<int> &nums) {
+        vector<vector<int> > res;
+        vector<int> cur;
+        sort(nums.begin(), nums.end());
+        rec(nums, 0, cur, res);
+        return res;
+    }
+};
+

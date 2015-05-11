@@ -18,8 +18,44 @@ public:
     vector<vector<int>> permute(vector<int>& nums) {
         vector<int> tmp;
         vector<vector<int> > res;
-        res.push_back(tmp);
+        res.push_back(tmp);  // !!!
         rec(res, 0, nums);
+        return res;
+    }
+};
+
+// LintCode
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+     */
+    void rec(vector<vector<int> > &curres, vector<bool> visited, vector<int> &cur, vector<int> nums){
+        if(cur.size() == nums.size()){
+            curres.push_back(cur);
+            return;
+        }
+        for(int i = 0; i < nums.size(); i++){
+            if(visited[i]){
+                continue;
+            }
+            visited[i] = true;
+            cur.push_back(nums[i]);
+            rec(curres, visited, cur, nums);
+            cur.pop_back();
+            visited[i] = false;
+        }
+    }
+
+    vector<vector<int> > permute(vector<int> nums) {
+        vector<vector<int> > res;
+        vector<int> tmp;
+        if(nums.size() == 0){
+            return res;
+        }
+        vector<bool> visited(nums.size(), false);
+        rec(res, visited, tmp, nums);
         return res;
     }
 };

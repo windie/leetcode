@@ -13,7 +13,7 @@ public:
 		TreeNode * pre = NULL;
 		while (!s.empty()) {
 			TreeNode *cur = s.top();
-			if (pre == NULL || pre->left == cur || pre->right == cur) {
+			if (pre == NULL || pre->left == cur || pre->right == cur) {  // traverse down the tree
 				if (cur->left) {
 					s.push(cur->left);
 				} else if (cur->right) {
@@ -22,14 +22,14 @@ public:
 					res.push_back(cur->val);
 					s.pop();
 				}
-			} else if (cur->left == pre) {
+			} else if (cur->left == pre) { // traverse up the tree from the left
 				if (cur->right) {
 					s.push(cur->right);
 				} else {
 					res.push_back(cur->val);
 					s.pop();
 				}
-			} else if (cur->right == pre) {
+			} else if (cur->right == pre) { // traverse up the tree from the right
 				res.push_back(cur->val);
 				s.pop();
 			}
@@ -38,6 +38,35 @@ public:
 		return res;
 	}
 };
+
+vector<int> postorderTraversal(TreeNode *root) {
+        stack<TreeNode *> s;
+        vector<int> res;
+        TreeNode *pre = NULL, *cur = NULL;
+        if(root == NULL) {
+            return res;
+        }
+        s.push(root);
+        while(!s.empty()){
+            cur = s.top();
+            if(pre == NULL || pre->left == cur || pre->right == cur){ // traverse down the tree
+                if(cur->left) {
+                    s.push(cur->left);
+                }else if(cur->right) {
+                    s.push(cur->right);
+                }
+            }else if(cur->left == pre) {  // traverse up the tree from the left
+                if(cur->right) {
+                    s.push(cur->right);
+                }
+            }else { // traverse up the tree from the right
+                res.push_back(cur->val);
+                s.pop();
+            }
+            pre = cur;
+        }
+        return res;
+    }
 
 //class Solution {
 //	void postorder(TreeNode * root, vector<int> &res) {

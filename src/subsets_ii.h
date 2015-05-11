@@ -23,6 +23,35 @@ public:
     }
 };
 
+class Solution {
+public:
+    /**
+     * @param S: A set of numbers.
+     * @return: A list of lists. All valid subsets.
+     */
+    void rec(vector<int> &s, vector<vector<int> > &res, vector<int> cur, int pos){
+        res.push_back(cur);
+        for(int i = pos; i < s.size(); i++){
+            if(i > 0 && i != pos && s[i] == s[i-1]){
+                continue;
+            }
+            cur.push_back(s[i]);
+            rec(s, res, cur, i+1);
+            cur.pop_back();
+        }
+    }
+    vector<vector<int> > subsetsWithDup(const vector<int> &S) {
+        vector<int> s = S;
+        sort(s.begin(), s.end());
+        vector<vector<int> > res;
+        vector<int> cur;
+        rec(s, res, cur, 0);
+        return res;
+    }
+};
+
+
+
 //class Solution {
 //public:
 //	vector<vector<int> > subsetsWithDup(vector<int> &S) {

@@ -19,6 +19,23 @@ public:
     }
 };
 
+    vector<int> inorderTraversal(TreeNode *root) {
+        stack<TreeNode* > s;
+        vector<int> res;
+        TreeNode *cur = root;
+        while(cur || !s.empty()){
+            while(cur) {
+                s.push(cur);
+                cur = cur->left;
+            }
+            TreeNode *node = s.top();
+            s.pop();
+            res.push_back(node->val);
+            cur = node->right;
+        }
+        return res;
+    }
+
 //#include <vector>
 //using namespace std;
 //
